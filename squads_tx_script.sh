@@ -17,16 +17,23 @@ echo '['
 # Process each line using a while loop
 echo "$transactions" | while IFS= read -r line; do
     # Split the line into transaction ID and metadata using awk
-    transaction_id=$(echo "$line" | awk -F ' \[slot=' '{ print $1 }')
-    metadata=$(echo "$line" | awk -F ' \[slot=' '{ print "[slot=" $2 }')
+    transaction_id=$(echo "$line" | awk -F ' \\[slot=' '{ print $1 }')
+    metadata=$(echo "$line" | awk -F ' \\[slot=' '{ print "[slot=" $2 }')
     
-    slot=$(echo "$metadata" | awk -F ' ' '{ print substr($0, 2) }' | awk '{print $1}')
+    slot_inter=$(echo "$metadata" | awk -F ' ' '{ print substr($0, 2) }' | awk '{print $1}')
+    slot=$(echo "$slot_inter" | awk -F '=' '{ print $1 ":"; print $2}')
+
+    timestamp_inter=$(echo "$metadata" | awk -F ' ' '{ print substr($0, 2) }' | awk '{print $2}')
+    timestamp=$(echo "$timestamp_inter" | awk -F '=' '{ print $1 ":"; print $2}')
+    
+    finalized_inter=$(echo "$metadata" | awk -F ' ' '{ print substr($0, 2) }' | awk '{print $3}')
+    finalized=$(echo "$finalized_inter" | awk -F '=' '{ print $1 ":"; print $2}')
 
     # Echo or print the transaction details with reverse count
     echo ' {'
     echo '  "transaction": ' $counter ','
     echo '  "transaction_id": "'$transaction_id '",'
-    echo '  "Metadata": '$slot ','
+    echo '  "Metadata": {'$slot ',' $timestamp ',' $finalized '},'
     echo '  "url": "https://solana.fm/tx/'$transaction_id'?cluster=mainnet-alpha"'
     echo ' },' 
 
@@ -34,13 +41,4 @@ echo "$transactions" | while IFS= read -r line; do
     ((counter--))
 done
 
-
 echo ']'
-
-# Output the formatted URLs with numbering
-echo "Transaction URLs for wallet $WALLET_ADDRESS:"
-counter=$total_transactions
-for tx_id in $transactions; do
-#  echo "$counter. https://solana.fm/tx/$tx_id?cluster=mainnet-alpha"
-  counter=$((counter - 1))
-done

@@ -33,7 +33,7 @@ echo "$transactions" | while IFS= read -r line; do
     echo ' {'
     echo '  "transaction": ' $counter ','
     echo '  "transaction_id": "'$transaction_id '",'
-    echo '  "Metadata": {'$slot ',' $timestamp ',' $finalized '},'
+    echo '  "Metadata": {''"'$slot'"' ',' '"'$timestamp'"' ',' '"'$finalized'"' '},'
     echo '  "url": "https://solana.fm/tx/'$transaction_id'?cluster=mainnet-alpha"'
     echo ' },' 
 

@@ -26,8 +26,8 @@ echo "$transactions" | while IFS= read -r line; do
     timestamp_inter=$(echo "$metadata" | awk -F ' ' '{ print substr($0, 2) }' | awk '{print $2}')
     timestamp=$(echo "$timestamp_inter" | awk -F '=' '{ print $2}')
     
-    finalized_inter=$(echo "$metadata" | awk -F ' ' '{ print substr($0, 2) }' | awk '{print $3}')
-    finalized=$(echo "$finalized_inter" | awk -F '=' '{ print $2}')
+    finalized_inter=$(echo "$metadata" | awk -F ' ' '{ print substr($0, 2) }')
+    finalized=$(echo "$finalized_inter")
 
     # Echo or print the transaction details with reverse count
     echo ' {'

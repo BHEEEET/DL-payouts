@@ -21,19 +21,19 @@ echo "$transactions" | while IFS= read -r line; do
     metadata=$(echo "$line" | awk -F ' \\[slot=' '{ print "[slot=" $2 }')
     
     slot_inter=$(echo "$metadata" | awk -F ' ' '{ print substr($0, 2) }' | awk '{print $1}')
-    slot=$(echo "$slot_inter" | awk -F '=' '{ print $1 ":"; print $2}')
+    slot=$(echo "$slot_inter" | awk -F '=' '{ print $2}')
 
     timestamp_inter=$(echo "$metadata" | awk -F ' ' '{ print substr($0, 2) }' | awk '{print $2}')
-    timestamp=$(echo "$timestamp_inter" | awk -F '=' '{ print $1 ":"; print $2}')
+    timestamp=$(echo "$timestamp_inter" | awk -F '=' '{ print $2}')
     
     finalized_inter=$(echo "$metadata" | awk -F ' ' '{ print substr($0, 2) }' | awk '{print $3}')
-    finalized=$(echo "$finalized_inter" | awk -F '=' '{ print $1 ":"; print $2}')
+    finalized=$(echo "$finalized_inter" | awk -F '=' '{ print $2}')
 
     # Echo or print the transaction details with reverse count
     echo ' {'
     echo '  "transaction": ' $counter ','
     echo '  "transaction_id": "'$transaction_id '",'
-    echo '  "Metadata": {''"'$slot'"' ',' '"'$timestamp'"' ',' '"'$finalized'"' '},'
+    echo '  "Metadata": { "slot":'$slot ', "timestamp":' $timestamp ', "finalized":"' $finalized '"},'
     echo '  "url": "https://solana.fm/tx/'$transaction_id'?cluster=mainnet-alpha"'
     echo ' },' 
 

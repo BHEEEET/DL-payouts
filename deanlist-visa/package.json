@@ -2,7 +2,7 @@
   "name": "deanlist-visa",
   "version": "1.0.0",
   "description": "Script to pull the Business Visa NFT data",
-  "main": "app.ts",
+  "main": "visa-data.ts",
   "author": "BHEET",
   "license": "MIT",
   "dependencies": {
